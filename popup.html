@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HufiBeta Voice Input</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 320px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f0f14;
+      color: #e8e0f5;
+      padding: 16px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .logo {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #6C3FC8, #9b5de5);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .header-title { font-size: 15px; font-weight: 700; color: #e8e0f5; }
+    .header-sub { font-size: 11px; color: #7c6fa0; }
+
+    /* Status bar */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #1a1728;
+      border: 1px solid #2e2845;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 14px;
+      font-size: 12px;
+    }
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #4caf50;
+      flex-shrink: 0;
+    }
+    .status-dot.inactive { background: #555; }
+    .status-dot.recording { background: #e53935; animation: pulse 1s infinite; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* Mode tabs */
+    .tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .tab {
+      flex: 1;
+      padding: 7px 4px;
+      border: 1px solid #2e2845;
+      border-radius: 8px;
+      background: #1a1728;
+      color: #7c6fa0;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .15s;
+      text-align: center;
+    }
+    .tab.active {
+      border-color: #6C3FC8;
+      background: #6C3FC820;
+      color: #b39ddb;
+    }
+    .tab:hover:not(.active) { border-color: #6C3FC850; color: #b39ddb; }
+
+    /* Mic button */
+    .mic-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .mic-btn {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, #6C3FC8, #9b5de5);
+      color: white;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px #6C3FC840;
+      transition: all .15s;
+      position: relative;
+    }
+    .mic-btn:hover { transform: scale(1.05); box-shadow: 0 6px 28px #6C3FC860; }
+    .mic-btn.recording {
+      background: linear-gradient(135deg, #c62828, #e53935);
+      box-shadow: 0 4px 24px #e5393550;
+      animation: glow 1.4s ease-in-out infinite;
+    }
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 4px 24px #e5393550; }
+      50% { box-shadow: 0 4px 36px #e5393590; }
+    }
+    .mic-btn:disabled {
+      background: #2e2845;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+    .mic-hint { font-size: 11px; color: #7c6fa0; text-align: center; }
+
+    /* Transcript area */
+    .transcript-box {
+      background: #1a1728;
+      border: 1px solid #2e2845;
+      border-radius: 8px;
+      padding: 10px;
+      min-height: 64px;
+      font-size: 13px;
+      color: #e8e0f5;
+      line-height: 1.5;
+      margin-bottom: 10px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .transcript-placeholder { color: #4a4060; font-style: italic; font-size: 12px; }
+
+    /* Action buttons */
+    .actions {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .btn {
+      flex: 1;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #2e2845;
+      background: #1a1728;
+      color: #b39ddb;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .btn:hover { border-color: #6C3FC8; background: #6C3FC815; }
+    .btn.primary {
+      background: linear-gradient(135deg, #6C3FC8, #9b5de5);
+      border-color: transparent;
+      color: white;
+    }
+    .btn.primary:hover { opacity: .9; }
+    .btn:disabled { opacity: .4; cursor: not-allowed; }
+
+    /* Settings panel */
+    .settings { display: none; }
+    .settings.open { display: block; }
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 0;
+      border-bottom: 1px solid #1e1c2e;
+      font-size: 12px;
+      color: #b39ddb;
+    }
+    .setting-row:last-child { border-bottom: none; }
+    select, input[type="text"] {
+      background: #1a1728;
+      border: 1px solid #2e2845;
+      border-radius: 6px;
+      color: #e8e0f5;
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+    select:focus, input:focus { outline: 1px solid #6C3FC8; }
+
+    /* Footer */
+    .footer {
+      font-size: 10px;
+      color: #3d3555;
+      text-align: center;
+      margin-top: 8px;
+    }
+
+    /* Spinner */
+    .spinner {
+      display: inline-block;
+      width: 18px; height: 18px;
+      border: 2px solid #ffffff40;
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .toast {
+      position: fixed;
+      bottom: 12px; left: 50%;
+      transform: translateX(-50%);
+      background: #2e2845;
+      border: 1px solid #6C3FC8;
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 12px;
+      color: #e8e0f5;
+      opacity: 0;
+      transition: opacity .25s;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .toast.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo">🎤</div>
+    <div>
+      <div class="header-title">HufiBeta</div>
+      <div class="header-sub">Voice Input by assaon.com</div>
+    </div>
+  </div>
+
+  <div class="status-bar">
+    <div class="status-dot inactive" id="statusDot"></div>
+    <span id="statusText">Kein Feld ausgewählt – klicke zuerst ins Feld</span>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" id="tabWeb" data-mode="web">🌐 Browser STT</div>
+    <div class="tab" id="tabWhisper" data-mode="whisper">🤖 Whisper KI</div>
+  </div>
+
+  <div class="mic-wrap">
+    <button class="mic-btn" id="micBtn" disabled>🎤</button>
+    <div class="mic-hint" id="micHint">Feld auf der Seite auswählen</div>
+  </div>
+
+  <div class="transcript-box" id="transcriptBox">
+    <span class="transcript-placeholder" id="placeholder">Transkript erscheint hier…</span>
+  </div>
+
+  <div class="actions">
+    <button class="btn" id="btnClear" disabled>Löschen</button>
+    <button class="btn" id="btnCopy" disabled>Kopieren</button>
+    <button class="btn primary" id="btnInsert" disabled>▶ Einfügen</button>
+  </div>
+
+  <details>
+    <summary style="font-size:11px;color:#7c6fa0;cursor:pointer;margin-bottom:8px;">⚙ Einstellungen</summary>
+    <div style="background:#1a1728;border:1px solid #2e2845;border-radius:8px;padding:10px;">
+      <div class="setting-row">
+        <span>Sprache</span>
+        <select id="langSelect">
+          <option value="de-DE">Deutsch (DE)</option>
+          <option value="de-AT">Deutsch (AT)</option>
+          <option value="de-CH">Deutsch (CH)</option>
+          <option value="en-US">English (US)</option>
+          <option value="en-GB">English (UK)</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <span>Whisper API URL</span>
+        <input type="text" id="whisperUrl" value="https://hufivoice.assaon.com/api/local-ai/transcribe" style="width:170px;font-size:10px;" />
+      </div>
+      <div class="setting-row">
+        <span>Interpunktion auto</span>
+        <input type="checkbox" id="autoPunct" checked />
+      </div>
+    </div>
+  </details>
+
+  <div class="footer">HufiBeta v1.0 · assaon.com</div>
+  <div class="toast" id="toast"></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

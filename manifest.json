@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "HufiBeta – Voice Input",
+  "version": "1.0.0",
+  "description": "Spracheingabe für beliebige Felder – optimiert für deutsche Sprache. Feld auswählen, Mikrofon drücken, los sprechen.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "HufiBeta Voice Input"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://hufivoice.assaon.com/*",
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
