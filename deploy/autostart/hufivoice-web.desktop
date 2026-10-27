@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=HufiVoice
+Comment=HufiVoice Web lokal im Chrome-App-Fenster
+Exec=google-chrome --app=http://127.0.0.1:8765
+Icon=@ICON@
+Terminal=false
+Categories=Utility;
+StartupNotify=true

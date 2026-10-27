@@ -1,0 +1,11 @@
+{
+  "modus": "api",
+  "vorschau": false,
+  "api": {
+    "url": "https://api.openai.com/v1/audio/transcriptions",
+    "modell": "gpt-transcribe",
+    "schluessel_umgebung": "HUFIVOICE_API_KEY",
+    "bei_fehler_lokal": false,
+    "wartezeit_s": 60
+  }
+}

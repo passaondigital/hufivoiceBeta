@@ -1,0 +1,66 @@
+{
+  "_hinweis": "Hier stellst du HufiVoice ein. Keine Schlüssel in diese Datei schreiben.",
+  "modus": "lokal",
+  "sprache": "de",
+  "taste": {
+    "aktiv": true,
+    "art": "halten",
+    "name": "Super_L",
+    "abbruch": "Escape",
+    "halten_ms": 350,
+    "tippen_oeffnet_menue": true,
+    "menue_befehl": "xfce4-popup-whiskermenu"
+  },
+  "mikrofon": "auto",
+  "vorschau": true,
+  "lokal": {
+    "whisper_programm": "~/.hufi/voice/whisper.cpp/build/bin/whisper-cli",
+    "whisper_modell": "~/.hufi/voice/modelle/ggml-base-q5_1.bin",
+    "threads": 2,
+    "audio_ctx": "auto",
+    "endtext": "whisper",
+    "vosk_modell": "~/.hufi/voice/modelle/vosk-model-small-de-0.15"
+  },
+  "server": {
+    "url": "https://hufivoice.assaon.com/api/local-ai/transcribe",
+    "feldname": "audio",
+    "wartezeit_s": 60,
+    "bei_fehler_lokal": true
+  },
+  "api": {
+    "url": "https://api.openai.com/v1/audio/transcriptions",
+    "modell": "gpt-transcribe",
+    "schluessel_umgebung": "HUFIVOICE_API_KEY",
+    "schluessel_datei": "~/.hufi/geheim/hufivoice_api_key",
+    "wartezeit_s": 60,
+    "bei_fehler_lokal": true
+  },
+  "woerter": "Huf, Hufe, Hufschmied, Barhuf, Pferd, Stute, Wallach, Hufi",
+  "einfuegen": {
+    "art": "zwischenablage",
+    "zwischenablage_zurueck": true,
+    "terminals": [
+      "xfce4-terminal",
+      "xterm",
+      "gnome-terminal",
+      "terminator",
+      "tilix",
+      "konsole",
+      "kitty",
+      "alacritty",
+      "urxvt"
+    ],
+    "leerzeichen_davor": false,
+    "warte_ms": 30
+  },
+  "fenster": {
+    "zeigen": true,
+    "stil": "welle",
+    "position": "unten_mitte",
+    "bildschirm": "maus",
+    "breite": 520,
+    "abstand_unten": 90,
+    "animation": true,
+    "deckkraft": 0.86
+  }
+}

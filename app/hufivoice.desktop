@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=HufiVoice
+Comment=Super halten, sprechen, loslassen
+Exec=@ZIEL@/venv/bin/python @ZIEL@/app/hufivoice.py
+X-GNOME-Autostart-enabled=true
+Terminal=false

@@ -1,0 +1,19 @@
+services:
+  hufivoice-web:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: hufivoice-web:test
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      HUFIVOICE_WEB_TOKEN: ${HUFIVOICE_WEB_TOKEN:?in .env setzen}
+      HUFIVOICE_API_KEY: ${HUFIVOICE_API_KEY:?in .env setzen}
+    ports:
+      - "127.0.0.1:8765:8765"

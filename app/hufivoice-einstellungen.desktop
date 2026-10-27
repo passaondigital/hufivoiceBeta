@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=HufiVoice Einstellungen
+Comment=Taste, Mikrofon, lokal oder API, Autostart
+Exec=@ZIEL@/venv/bin/python @ZIEL@/app/hufivoice.py --einstellungen
+Icon=audio-input-microphone
+Categories=Utility;Settings;
+Terminal=false

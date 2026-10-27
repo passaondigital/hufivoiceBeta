@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="description" content="HufiVoice – Sprache lokal oder über deinen eigenen Server in Text verwandeln.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>HufiVoice</title>
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="HufiVoice Startseite">Hufi<span>Voice</span></a>
+      <button id="settingsButton" class="icon-button" type="button" aria-label="Einstellungen öffnen" aria-expanded="false">⚙</button>
+    </header>
+
+    <section class="hero" aria-labelledby="headline">
+      <p class="eyebrow"><span class="status-dot"></span><span id="privacyLabel">Lokal auf diesem Gerät</span></p>
+      <h1 id="headline">Sprich. Dein Text<br><em>ist sofort da.</em></h1>
+      <p class="intro">Halte die Taste, sprich deinen Satz und lass los. Deine Aufnahme geht nur an den von dir gewählten HufiVoice-Endpunkt.</p>
+    </section>
+
+    <section class="recorder" aria-label="Sprachaufnahme">
+      <div id="wave" class="wave" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <button id="recordButton" class="record-button" type="button">
+        <span class="record-icon"></span>
+        <span id="recordLabel">Zum Sprechen halten</span>
+      </button>
+      <p id="status" class="status" role="status" aria-live="polite">Bereit</p>
+    </section>
+
+    <section id="resultCard" class="result-card" aria-labelledby="resultTitle" hidden>
+      <div class="result-head">
+        <h2 id="resultTitle">Dein Text</h2>
+        <span id="sourceLabel">lokal</span>
+      </div>
+      <textarea id="result" rows="6" aria-label="Erkannter Text"></textarea>
+      <div class="actions">
+        <button id="copyButton" class="primary" type="button">Text kopieren</button>
+        <button id="clearButton" class="secondary" type="button">Leeren</button>
+      </div>
+    </section>
+
+    <aside id="settings" class="settings" hidden aria-labelledby="settingsTitle">
+      <div class="settings-head">
+        <div><p class="eyebrow">VERBINDUNG</p><h2 id="settingsTitle">Dein HufiVoice</h2></div>
+        <button id="closeSettings" class="icon-button" type="button" aria-label="Einstellungen schließen">×</button>
+      </div>
+      <label for="endpoint">Transkriptions-Endpunkt</label>
+      <input id="endpoint" type="url" inputmode="url" placeholder="/api/transcribe">
+      <p class="hint">Leer oder <code>/api/transcribe</code> nutzt den lokalen Server. Für online eine HTTPS-Adresse eintragen.</p>
+      <label for="token">Zugangscode <span>(optional)</span></label>
+      <input id="token" type="password" autocomplete="off" placeholder="Nur für deinen privaten Server">
+      <button id="saveSettings" class="primary full" type="button">Auf diesem Gerät speichern</button>
+      <p class="privacy">Der Zugangscode bleibt nur bis zum Schließen der App im Browser. Aufnahmen werden nicht im Browser gespeichert.</p>
+    </aside>
+
+    <footer><span>HufiVoice Testkopie</span><span>Linux · Android · Web</span></footer>
+  </main>
+  <script src="app.js" defer></script>
+</body>
+</html>

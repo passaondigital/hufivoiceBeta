@@ -1,0 +1,16 @@
+# HufiVoice Web (Testkopie) als systemd-User-Dienst.
+# Eigener Name, damit das vorhandene hufivoice.service (anderer Whisper-Dienst) unberuehrt bleibt.
+# Laeuft nur auf diesem Rechner: 127.0.0.1:8765.
+[Unit]
+Description=HufiVoice Web (lokal, nur 127.0.0.1:8765)
+After=default.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/hufivoice-test-wave
+ExecStart=%h/hufivoice-test-wave/HUFIVOICE_WEB_STARTEN.sh --host 127.0.0.1 --port 8765
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
